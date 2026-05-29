@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Book>
+@{
+    ViewData["Title"] = "Kho sách thư viện";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold mb-0"><i class="fa-solid fa-book text-secondary me-2"></i>Quản Lý Kho Sách</h3>
+    <a class="btn btn-primary" asp-action="Create"><i class="fa-solid fa-plus me-1"></i>Thêm Sách Mới</a>
+</div>
+
+<div class="card border-0 shadow-sm p-4">
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <input type="text" name="keyword" class="form-control" placeholder="Mã sách, tên sách, tác giả..." />
+        </div>
+        <div class="col-md-3">
+            <select name="categoryId" class="form-select" asp-items="ViewBag.Categories">
+                <option value="">-- Tất cả danh mục --</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="status" class="form-select">
+                <option value="">-- Tất cả trạng thái --</option>
+                <option value="Available">Available (Còn sách)</option>
+                <option value="Unavailable">Unavailable (Hết sách)</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-dark w-100" type="submit"><i class="fa-solid fa-filter"></i> Lọc dữ liệu</button>
+        </div>
+    </form>
+
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Mã Sách</th>
+                <th>Tên Sách / Tác Giả</th>
+                <th>Danh Mục</th>
+                <th class="text-center">Tổng Số</th>
+                <th class="text-center">Khả Dụng</th>
+                <th>Trạng Thái</th>
+                <th class="text-center">Hành Động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><span class="badge bg-secondary">@item.BookCode</span></td>
+                    <td>
+                        <div class="fw-bold text-dark">@item.BookTitle</div>
+                        <small class="text-muted">T/G: @item.Author</small>
+                    </td>
+                    <td>@(item.Category?.CategoryName ?? "Không có")</td>
+                    <td class="text-center">@item.Quantity</td>
+                    <td class="text-center fw-bold text-success">@item.AvailableQuantity</td>
+                    <td>
+                        <span class="badge @(item.Status == "Available" ? "bg-success" : "bg-danger")">@item.Status</span>
+                    </td>
+                    <td class="text-center">
+                        <a class="btn btn-sm btn-outline-warning me-1" asp-action="Edit" asp-route-id="@item.BookId"><i class="fa-regular fa-edit"></i> Sửa</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@item.BookId" onclick="return confirm('Bạn chắc chắn muốn xóa mềm đầu sách này chứ?')"><i class="fa-regular fa-trash-can"></i> Xóa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

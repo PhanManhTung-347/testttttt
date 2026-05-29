@@ -1,0 +1,107 @@
+﻿@model IEnumerable<Reader>
+@{
+    ViewData["Title"] = "Danh sách sinh viên";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold mb-0"><i class="fa-solid fa-users text-secondary me-2"></i>Quản Lý Độc Giả Sinh Viên</h3>
+    <button class="btn btn-primary" onclick="openAddReader()"><i class="fa-solid fa-user-plus me-1"></i>Thêm Độc Giả mới</button>
+</div>
+
+<div class="card border-0 shadow-sm p-4">
+    <form method="get" class="row g-3 mb-3">
+        <div class="col-md-4">
+            <input type="text" name="keyword" class="form-control" placeholder="Tìm theo MSSV, Họ tên, SĐT..." />
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-dark w-100" type="submit">Tìm kiếm</button>
+        </div>
+    </form>
+
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Mã Sinh Viên</th>
+                <th>Họ Và Tên</th>
+                <th>Lớp Học</th>
+                <th>Số Điện Thoại</th>
+                <th>Email Liên Hệ</th>
+                <th>Trạng Thái</th>
+                <th class="text-center">Hành Động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><strong class="text-primary">@item.StudentCode</strong></td>
+                    <td class="fw-bold text-dark">@item.FullName</td>
+                    <td>@item.ClassName</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>@item.Email</td>
+                    <td>
+                        <span class="badge @(item.IsActive == true ? "bg-success" : "bg-danger")">
+                            @(item.IsActive == true ? "Kích Hoạt" : "Khóa Thẻ")
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-outline-warning" onclick="openEditReader('@item.ReaderId','@item.StudentCode','@item.FullName','@item.ClassName','@item.PhoneNumber','@item.Email','@item.IsActive')"><i class="fa-regular fa-edit"></i> Sửa</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="modalReader" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-action="Save" method="post" class="modal-content">
+            <div class="modal-header"><h5 id="modalTitle">Độc Giả</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <input type="hidden" id="rId" name="ReaderId" />
+                <div class="mb-2"><label class="form-label">Mã sinh viên</label><input id="rCode" name="StudentCode" class="form-control" required /></div>
+                <div class="mb-2"><label class="form-label">Họ tên độc giả</label><input id="rName" name="FullName" class="form-control" required /></div>
+                <div class="mb-2"><label class="form-label">Lớp</label><input id="rClass" name="ClassName" class="form-control" /></div>
+                <div class="mb-2"><label class="form-label">Số điện thoại</label><input id="rPhone" name="PhoneNumber" class="form-control" required /></div>
+                <div class="mb-2"><label class="form-label">Email</label><input id="rEmail" type="email" name="Email" class="form-control" /></div>
+                <div class="mb-2">
+                    <label class="form-label">Trạng thái thẻ</label>
+                    <select id="rActive" name="IsActive" class="form-select">
+                        <option value="true">Kích Hoạt</option>
+                        <option value="false">Khóa</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer"><button type="submit" class="btn btn-primary">Xác Nhận Lưu</button></div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var myModal = new bootstrap.Modal(document.getElementById('modalReader'));
+        function openAddReader() {
+            document.getElementById('modalTitle').innerText = "Thêm Độc Giả Sinh Viên Mới";
+            document.getElementById('rId').value = 0;
+            document.getElementById('rCode').disabled = false;
+            document.getElementById('rCode').value = "";
+            document.getElementById('rName').value = "";
+            document.getElementById('rClass').value = "";
+            document.getElementById('rPhone').value = "";
+            document.getElementById('rEmail').value = "";
+            myModal.show();
+        }
+        function openEditReader(id, code, name, className, phone, email, active) {
+            document.getElementById('modalTitle').innerText = "Sửa Thông Tin Độc Giả";
+            document.getElementById('rId').value = id;
+            document.getElementById('rCode').value = code;
+            document.getElementById('rCode').disabled = true;
+            document.getElementById('rName').value = name;
+            document.getElementById('rClass').value = className;
+            document.getElementById('rPhone').value = phone;
+            document.getElementById('rEmail').value = email;
+            document.getElementById('rActive').value = active.toLowerCase() === 'true' ? 'true' : 'false';
+            myModal.show();
+        }
+    </script>
+}
