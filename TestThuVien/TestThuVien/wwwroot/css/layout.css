@@ -1,0 +1,197 @@
+﻿/* ====================================================================
+   ADMIN DASHBOARD LAYOUT STYLESHEET
+   ==================================================================== */
+
+/* 1. Thiết lập cấu trúc nền tảng */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: #f4f6f9;
+    color: #333333;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* 2. Thanh điều hướng bên trái (Sidebar) */
+.sidebar {
+    width: 260px;
+    background-color: #1e2229;
+    color: #ffffff;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.sidebar-brand {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #2d323e;
+}
+
+    .sidebar-brand h5 {
+        font-size: 1.15rem;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+
+/* Menu điều hướng bên trong Sidebar */
+.sidebar .nav {
+    padding: 15px 0;
+}
+
+.sidebar .nav-item {
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+.sidebar .nav-link {
+    color: #a0aec0;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-left: 4px solid transparent;
+    transition: all 0.2s ease-in-out;
+}
+
+    /* Trạng thái Hover và Active của Menu */
+    .sidebar .nav-link:hover {
+        color: #ffffff;
+        background-color: #2d323e;
+        border-left-color: #a0aec0;
+    }
+
+    .sidebar .nav-link.active {
+        color: #ffffff;
+        background-color: #243b34; /* Tint xanh lục đậm */
+        border-left-color: #2ecc71; /* Accent xanh lục sáng */
+    }
+
+    .sidebar .nav-link i {
+        width: 24px;
+        font-size: 1.1rem;
+    }
+
+.sidebar-footer {
+    padding: 15px;
+    border-top: 1px solid #2d323e;
+    background-color: #171a21;
+}
+
+/* 3. Khu vực nội dung chính hiển thị bên phải */
+.main-content {
+    margin-left: 260px; /* Bằng chiều rộng Sidebar */
+    padding: 35px;
+    min-height: 100vh;
+    transition: all 0.3s ease;
+}
+
+/* Headings & Tiêu đề Phân hệ */
+h2, h3, h4 {
+    color: #2c3e50;
+    font-weight: 700;
+}
+
+/* 4. Các khối thẻ Thống kê (Dashboard Cards) */
+.card-counter {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02), 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    border-left-width: 5px !important; /* Độ dày viền Accent bên trái */
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .card-counter:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+    }
+
+/* 5. Định dạng lại Bảng dữ liệu (Tables) và Thẻ Card Chứa */
+.card-table-container {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    padding: 24px;
+    margin-top: 15px;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+    .table thead th {
+        background-color: #f8fafc;
+        color: #64748b;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-uppercase: true;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #e2e8f0;
+        padding: 14px 16px;
+    }
+
+    .table tbody td {
+        padding: 14px 16px;
+        border-bottom: 1px solid #edf2f7;
+        color: #4a5568;
+        font-size: 0.92rem;
+    }
+
+    .table tbody tr:hover {
+        background-color: #fcfdfe;
+    }
+
+/* 6. Các thành phần bổ trợ nhỏ (Badges & Buttons) */
+.badge {
+    padding: 6px 12px;
+    font-weight: 600;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+/* Vùng cuộn cho danh sách chọn sách khi tạo phiếu mượn */
+.scrollable-table-box {
+    max-height: 320px;
+    overflow-y: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+}
+
+    .scrollable-table-box::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .scrollable-table-box::-webkit-scrollbar-thumb {
+        background-color: #cbd5e1;
+        border-radius: 3px;
+    }
+
+/* Giới hạn chiều rộng cho form Thêm/Sửa */
+.max-width-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
