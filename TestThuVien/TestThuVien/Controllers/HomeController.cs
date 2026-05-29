@@ -1,8 +1,7 @@
-// Controllers/HomeController.cs
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TestThuVien.Models;
-
+using TestThuVien.Models;   
 namespace TestThuVien.Controllers;
 
 public class HomeController : Controller
