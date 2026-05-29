@@ -1,5 +1,10 @@
-﻿using System;
+﻿
+
+using QuanLyThuVien.Validation;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace TestThuVien.Models;
 
@@ -7,6 +12,7 @@ public partial class BookCategory
 {
     public int CategoryId { get; set; }
 
+    [RequiredCategoryName]
     public string CategoryName { get; set; } = null!;
 
     public string? Description { get; set; }
