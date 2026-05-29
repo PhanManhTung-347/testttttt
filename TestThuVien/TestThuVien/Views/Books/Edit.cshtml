@@ -1,0 +1,46 @@
+﻿@model Book
+@{
+    ViewData["Title"] = "Sửa thông tin sách";
+}
+
+<div class="card border-0 shadow-sm p-4 max-width-700 mx-auto">
+    <h4 class="fw-bold mb-4 text-warning"><i class="fa-regular fa-pen-to-square me-2"></i>Cập Nhật Thông Tin Sách</h4>
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="BookId" />
+        <input type="hidden" asp-for="BookCode" />
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Mã sách</label>
+                <input class="form-control" value="@Model.BookCode" disabled />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Tên sách</label>
+                <input asp-for="BookTitle" class="form-control" required />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Tác giả</label>
+                <input asp-for="Author" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Danh mục sách</label>
+                <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId" required></select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Nhà xuất bản</label>
+                <input asp-for="Publisher" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Năm xuất bản</label>
+                <input asp-for="PublishYear" type="number" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-semibold">Tổng số</label>
+                <input asp-for="Quantity" type="number" class="form-control" required />
+            </div>
+        </div>
+        <div class="mt-4 text-end">
+            <a class="btn btn-light me-2" asp-action="Index">Quay lại</a>
+            <button type="submit" class="btn btn-warning px-4">Lưu Thay Đổi</button>
+        </div>
+    </form>
+</div>
