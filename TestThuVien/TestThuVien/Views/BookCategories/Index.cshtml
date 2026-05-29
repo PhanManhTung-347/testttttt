@@ -1,0 +1,97 @@
+﻿@model IEnumerable<BookCategory>
+@{
+    ViewData["Title"] = "Danh mục sách";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold mb-0"><i class="fa-solid fa-tags text-secondary me-2"></i>Quản Lý Danh Mục Sách</h3>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdd"><i class="fa-solid fa-plus me-1"></i>Thêm Danh Mục</button>
+</div>
+
+<div class="card border-0 shadow-sm p-4">
+    <form method="get" class="row g-3 mb-3">
+        <div class="col-md-4">
+            <input type="text" name="keyword" class="form-control" placeholder="Tìm tên danh mục..." />
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-dark w-100" type="submit">Tìm kiếm</button>
+        </div>
+    </form>
+
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Mã loại</th>
+                <th>Tên danh mục</th>
+                <th>Mô tả</th>
+                <th>Trạng thái</th>
+                <th class="text-center">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.CategoryId</td>
+                    <td><strong class="text-dark">@item.CategoryName</strong></td>
+                    <td>@item.Description</td>
+                    <td>
+                        <span class="badge @(item.IsActive == true ? "bg-success" : "bg-danger")">
+                            @(item.IsActive == true ? "Đang hoạt động" : "Khóa")
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-outline-warning me-1" onclick="openEditModal('@item.CategoryId', '@item.CategoryName', '@item.Description', '@item.IsActive')"><i class="fa-regular fa-pen-to-square"></i> Sửa</button>
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="ToggleStatus" asp-route-id="@item.CategoryId"><i class="fa-solid fa-toggle-on"></i> Đổi Trạng Thái</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="modalAdd" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-action="Create" method="post" class="modal-content">
+            <div class="modal-header"><h5>Thêm Danh Mục Mới</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <div class="mb-3"><label class="form-label">Tên danh mục</label><input name="CategoryName" class="form-control" required /></div>
+                <div class="mb-3"><label class="form-label">Mô tả</label><textarea name="Description" class="form-control"></textarea></div>
+            </div>
+            <div class="modal-footer"><button type="submit" class="btn btn-primary">Lưu lại</button></div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEdit" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-action="Edit" method="post" class="modal-content">
+            <div class="modal-header"><h5>Sửa Danh Mục</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <input type="hidden" id="editId" name="CategoryId" />
+                <div class="mb-3"><label class="form-label">Tên danh mục</label><input id="editName" name="CategoryName" class="form-control" required /></div>
+                <div class="mb-3"><label class="form-label">Mô tả</label><textarea id="editDesc" name="Description" class="form-control"></textarea></div>
+                <div class="mb-3">
+                    <label class="form-label">Trạng thái</label>
+                    <select id="editActive" name="IsActive" class="form-select">
+                        <option value="true">Đang hoạt động</option>
+                        <option value="false">Khóa</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer"><button type="submit" class="btn btn-warning">Cập nhật</button></div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function openEditModal(id, name, desc, active) {
+            document.getElementById('editId').value = id;
+            document.getElementById('editName').value = name;
+            document.getElementById('editDesc').value = desc;
+            document.getElementById('editActive').value = active.toLowerCase() === 'true' ? 'true' : 'false';
+            new bootstrap.Modal(document.getElementById('modalEdit')).show();
+        }
+    </script>
+}
