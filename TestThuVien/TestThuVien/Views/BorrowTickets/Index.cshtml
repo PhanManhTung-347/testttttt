@@ -1,0 +1,68 @@
+﻿@model IEnumerable<BorrowTicket>
+@{
+    ViewData["Title"] = "Danh sách phiếu mượn";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold mb-0"><i class="fa-solid fa-file-invoice text-secondary me-2"></i>Sổ Theo Dõi Mượn Trả Sách</h3>
+    <a class="btn btn-success" asp-action="Create"><i class="fa-solid fa-plus me-1"></i>Tạo Phiếu Mượn Mới</a>
+</div>
+
+<div class="card border-0 shadow-sm p-4">
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-5">
+            <input type="text" name="keyword" class="form-control" placeholder="Tìm kiếm theo mã phiếu, tên sinh viên..." />
+        </div>
+        <div class="col-md-4">
+            <select name="status" class="form-select">
+                <option value="">-- Tất cả trạng thái phiếu --</option>
+                <option value="Borrowing">Borrowing (Đang mượn)</option>
+                <option value="Returned">Returned (Đã trả xong)</option>
+                <option value="Overdue">Overdue (Đang quá hạn)</option>
+                <option value="Cancelled">Cancelled (Đã hủy)</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-dark w-100" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Lọc Phiếu</button>
+        </div>
+    </form>
+
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Mã Phiếu</th>
+                <th>Sinh Viên Mượn</th>
+                <th>Ngày Mượn</th>
+                <th>Hạn Trả Dự Kiến</th>
+                <th>Ngày Trả Thực Tế</th>
+                <th>Trạng Thái</th>
+                <th class="text-center">Chi Tiết / Trả Sách</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                string statusClass = item.Status switch
+                {
+                    "Borrowing" => "bg-info text-dark",
+                    "Returned" => "bg-success",
+                    "Overdue" => "bg-danger",
+                    _ => "bg-secondary"
+                };
+                <tr>
+                    <td><strong class="text-dark">@item.TicketCode</strong></td>
+                    <td><span class="fw-semibold">@item.Reader?.FullName</span></td>
+                    <td>@item.BorrowDate.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@item.ExpectedReturnDate.ToString("dd/MM/yyyy")</td>
+                    <td>@(item.ReturnDate?.ToString("dd/MM/yyyy HH:mm") ?? "---")</td>
+                    <td><span class="badge @statusClass">@item.Status</span></td>
+                    <td class="text-center">
+                        <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-route-id="@item.TicketId">
+                            <i class="fa-solid fa-eye"></i> Xem Xử lý
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
